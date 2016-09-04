@@ -8,6 +8,13 @@
 using namespace cv;
 using namespace std;
 
+static float get_2D_distance(const Point& pt1, const Point& pt2)
+{//based on the Euclidean plane
+    float diffX = pt1.x - pt2.x;
+    float diffY = pt1.y - pt2.y;
+    return sqrt( (diffX * diffX) + (diffY * diffY) );
+}
+
 int main(int argc, char* argv[])
 {
     Mat image = imread("./images/threshold.png");
@@ -20,6 +27,7 @@ int main(int argc, char* argv[])
  	line(new_frame,Point(118,140),Point(220,140),CV_RGB(0,255,0),1,8);
  	line(new_frame,Point(118,220),Point(210,224),CV_RGB(0,255,0),1,8);
  	line(new_frame,Point(220,140),Point(210,224),CV_RGB(0,255,0),1,8);
+
 
  	vector<Point> edges;
  	//place points in anti-clockwise order from top left
@@ -49,21 +57,15 @@ int main(int argc, char* argv[])
     Size warp_size(200,200);
     warpPerspective(new_frame,roi_frame,warpAffineMatrix,warp_size,INTER_LINEAR,BORDER_CONSTANT);
 
-
-    imwrite("./images/marked_frame.png",new_frame);
-    imwrite("./images/roi.png",roi_frame);
-
-
     // Store the set of points in the ROI image
     vector<Point> points;
-    Mat_<float>::iterator it = new_frame.begin<float>();
-    Mat_<float>::iterator end = new_frame.end<float>();
+    Mat_<float>::iterator it = roi_frame.begin<float>();
+    Mat_<float>::iterator end = roi_frame.end<float>();
     for (; it != end; ++it)
     {
         if (*it) 
         {
             points.push_back(it.pos());
-            cout<<it.pos();
         }
     }
     int x,y;
@@ -75,11 +77,20 @@ int main(int argc, char* argv[])
         printf("x:%d y:%d %d\n",x,y,roi_frame.at<uchar>(x,y));
     }
 
+    x = (get_2D_distance(Point(0,0), Point(199,0)) ) /2;
+    y = (get_2D_distance(Point(0,0),Point(0,199)) ) /2;
+    //circle(Mat& img, Point center, int radius, const Scalar& color, int thickness=1, int lineType=8, int shift=0)
+    circle(roi_frame,Point(x,y),10,Scalar(255,0,0));
+    // line(roi_frame,Point(32,149),Point(74,149),CV_RGB(255,0,0),1,8);
+
     // while(1)
     // {
     // 	imshow("mat",image);
     // 	// imshow("box", new_frame);
     // 	if((waitKey(30)) == 10) break;
     // }
+    imwrite("./images/marked_frame.png",new_frame);
+    imwrite("./images/roi.png",roi_frame);
+
     return 0;
 }

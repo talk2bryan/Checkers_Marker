@@ -9,7 +9,8 @@ CXXFLAGS += -Wall -O2 -DLINUX $(INCLUDE_DIRS)
 
 all:	$(TARGET)
 
-$(TARGET):
+
+$(TARGET): clean
 		$(CXX) $(FILENAME) $(CXXFLAGS) $(LIBS)  -o $@
 
 clean:
