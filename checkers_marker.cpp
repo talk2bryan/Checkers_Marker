@@ -12,28 +12,28 @@ int main(int argc, char* argv[])
 {
     Mat image = imread("./images/threshold.png");
     Mat new_frame = image.clone();
-    Mat  roi_frame = cv::Mat(200,200,CV_8U); //this will contain our roi
+    Mat  roi_frame = Mat(200,200,CV_8U); //this will contain our roi
 
 	//points describing the edges from observation
 	//for debug purposes
- 	cv::line(new_frame,Point(118,140),Point(118,220),CV_RGB(0,255,0),1,8);
- 	cv::line(new_frame,Point(118,140),Point(220,140),CV_RGB(0,255,0),1,8);
- 	cv::line(new_frame,Point(118,220),Point(210,224),CV_RGB(0,255,0),1,8);
- 	cv::line(new_frame,Point(220,140),Point(210,224),CV_RGB(0,255,0),1,8);
+ 	line(new_frame,Point(118,140),Point(118,220),CV_RGB(0,255,0),1,8);
+ 	line(new_frame,Point(118,140),Point(220,140),CV_RGB(0,255,0),1,8);
+ 	line(new_frame,Point(118,220),Point(210,224),CV_RGB(0,255,0),1,8);
+ 	line(new_frame,Point(220,140),Point(210,224),CV_RGB(0,255,0),1,8);
 
- 	vector<cv::Point> edges;
+ 	vector<Point> edges;
  	//place points in anti-clockwise order from top left
  	edges.push_back(Point(118,140));
  	edges.push_back(Point(118,220));
  	edges.push_back(Point(210,224));
  	edges.push_back(Point(220,140));
  	
-	cv::Point2f dst_vertices[4]; 
+	Point2f dst_vertices[4]; 
     // define dimensions of new ROI in same order
-    dst_vertices[0] = cv::Point(0,0);
-    dst_vertices[1] = cv::Point(0,199);
-    dst_vertices[2] = cv::Point(199,199);	
-    dst_vertices[3] = cv::Point(199,0);
+    dst_vertices[0] = Point(0,0);
+    dst_vertices[1] = Point(0,199);
+    dst_vertices[2] = Point(199,199);	
+    dst_vertices[3] = Point(199,0);
 
     //place points in an array to perform 
     //transformation
@@ -44,10 +44,10 @@ int main(int argc, char* argv[])
     src_vertices[3] = edges[3];
 
     //perform transformation
-    cv::Mat warpAffineMatrix = cv::getPerspectiveTransform(src_vertices,dst_vertices);
+    Mat warpAffineMatrix = getPerspectiveTransform(src_vertices,dst_vertices);
 
-    cv::Size warp_size(200,200);
-    cv::warpPerspective(new_frame,roi_frame,warpAffineMatrix,warp_size,cv::INTER_LINEAR,cv::BORDER_CONSTANT);
+    Size warp_size(200,200);
+    warpPerspective(new_frame,roi_frame,warpAffineMatrix,warp_size,INTER_LINEAR,BORDER_CONSTANT);
 
 
     imwrite("./images/marked_frame.png",new_frame);
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 
 
     // Store the set of points in the ROI image
-    vector<cv::Point> points;
+    vector<Point> points;
     Mat_<float>::iterator it = new_frame.begin<float>();
     Mat_<float>::iterator end = new_frame.end<float>();
     for (; it != end; ++it)
