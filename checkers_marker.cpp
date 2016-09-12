@@ -76,12 +76,39 @@ int main(int argc, char* argv[])
         y = points[i].y;
         printf("x:%d y:%d %d\n",x,y,roi_frame.at<uchar>(x,y));
     }
+    //152,149 to 181,149
+    //32, 147 to 57,147
 
     x = (get_2D_distance(Point(0,0), Point(199,0)) ) /2;
     y = (get_2D_distance(Point(0,0),Point(0,199)) ) /2;
-    //circle(Mat& img, Point center, int radius, const Scalar& color, int thickness=1, int lineType=8, int shift=0)
-    circle(roi_frame,Point(x,y),10,Scalar(255,0,0));
+
+    line(roi_frame,Point(110,110),Point(120,110),CV_RGB(255,0,0),1,1); //middle
+
+    
+    line(roi_frame,Point(40,160),Point(50,160),CV_RGB(255,0,0),1,8); //BL
+    line(roi_frame,Point(50,57),Point(60,57),CV_RGB(255,0,0),1,8); //TL
+    line(roi_frame,Point(160,59),Point(170,59),CV_RGB(255,0,0),1,1); //TR
+    line(roi_frame,Point(170,159),Point(180,159),CV_RGB(255,0,0),1,1); //BR
+    
+
     // line(roi_frame,Point(32,149),Point(74,149),CV_RGB(255,0,0),1,8);
+
+
+    /*
+        int count_black = 0;
+        int count_white = 0;
+        for( int y = 0; y < gray.rows; y++ ) {
+          for( int x = 0; x < gray.cols; x++ ) {
+            if ( mask.at<uchar>(y,x) != 0 ) {
+              if ( gray.at<uchar>(y,x) == 255 ) {
+                count_white++;
+              } 
+              else {
+                count_black++;
+              } 
+            }
+}
+    */
 
     // while(1)
     // {
