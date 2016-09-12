@@ -83,12 +83,22 @@ int main(int argc, char* argv[])
     y = (get_2D_distance(Point(0,0),Point(0,199)) ) /2;
 
     line(roi_frame,Point(110,110),Point(120,110),CV_RGB(255,0,0),1,1); //middle
-
-    
     line(roi_frame,Point(40,160),Point(50,160),CV_RGB(255,0,0),1,8); //BL
     line(roi_frame,Point(50,57),Point(60,57),CV_RGB(255,0,0),1,8); //TL
     line(roi_frame,Point(160,59),Point(170,59),CV_RGB(255,0,0),1,1); //TR
     line(roi_frame,Point(170,159),Point(180,159),CV_RGB(255,0,0),1,1); //BR
+
+    Point mid(110,110);
+    int start = mid.x;
+    printf("\n\n");
+    for (int i = start; i < start+10; ++i)
+    {
+        printf("x:%d y:%d : ",i,mid.y);
+        printf("%d\n",roi_frame.at<uchar>(i,mid.y));
+
+    }
+    cout<<endl;
+
     
 
     // line(roi_frame,Point(32,149),Point(74,149),CV_RGB(255,0,0),1,8);
